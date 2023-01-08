@@ -1,0 +1,65 @@
+dwm4k - dwm extended for four column mode on 4K monitors.
+=========================================================
+
+This fork of dwm adds a tiling mode suitable for 4K monitors.
+
+The basic idea is that some windows only need 1/4 of the width of the screen
+(eg. terminals, editors viewing 80-column text) while others need 1/2 the width
+of the screen to work well -- notably browsers.
+
+MODKEY + END toggles a window between preferring "narrow" and "wide" rendering.
+
+The new tiling mode produces something like this:
+
++-------------------+-------------------+---------------------------------------+
+|                   |                   |                                       |
+|                   |                   |                                       |
+|                   |                   |                                       |
+|                   |                   |                                       |
+|    narrow win2    |    narrow win1    |             wide win3                 |
+|                   |                   |                                       |
+|                   |                   |                                       |
+|                   |                   |                                       |
+|                   |                   +-------------------+-------------------+
+|                   |                   |                   |                   |
+|                   |                   |                   |                   |
+|                   |                   |                   |                   |
+|                   |                   |    narrow win4    |     narrow win5   |
+|                   |                   |                   |                   |
+|                   |                   |                   |                   |
+|                   |                   |                   |                   |
++-------------------+-------------------+-------------------+-------------------+
+
+Higher-priority windows go on the left, lower on the right.
+
+A good default is to run with nmaster==1 and mfact==0.5, in which:
+  * A wide master window occupies the whole left half of the screen.
+  * A narrow master occupies a full-height quarter-width slice of the screen,
+    like "win1" shown above. As there's presumably little benefit in awarding
+    more horizontal space to a narrow window, another narrow window also gets
+    a full-height quarter-width slice, like "win2" shown above.
+
+This allows efficient use of screen space when editing 80-column text. A 4K
+monitor can comfortably fit four 80-column editor windows side by side.
+
+It's also efficient for browsers: while many pages render poorly at only
+1/4 the width of a 4K screen, it's rare that a browser benefits from more than
+1/2 its width.
+
+As with other dwm tiling modes, nmaster can be increased to raise the density
+of the left-half of the screen, and mfact can be adjusted to move the boundary
+between the laft and right halves.
+
+
+FAQ
+===
+
+Q)  Why are the default key bindings for alpha keys weird?
+A)  They're set to make sense with Colemak layout. You can change them back
+    to the normal QWERTY bindings by editing config.h
+
+Q)  Why a fork and not just another tiling mode that can be dropped into dwm?
+A)  There are a few pervasive changes:
+    * The new mode is implemented in C++, which required some adjustments
+      to the base dwm code to integrate with a C++ module.
+    * The 'prefer_wide' bit pervades the base dwm code.
